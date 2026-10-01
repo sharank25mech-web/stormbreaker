@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Onion Grade</title>
+<style>
+:root{--ink:#0f3b4a;--ink2:#4a6f7d;--bg:#eefaf8;--card:#ffffff;--line:#cdebe6;--skin:#1385c2;--violet:#1a9a6b;--gold:#ffc94d;--A:#22a84a;--B:#f59e0b;--C:#e5393a;--grad:linear-gradient(135deg,#1385c2,#1a9a6b);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e6f7f4;--ink2:#a9cdd0;--bg:#0b2530;--card:#123544;--line:#245569}}
+:root[data-theme="dark"]{--ink:#e6f7f4;--ink2:#a9cdd0;--bg:#0b2530;--card:#123544;--line:#245569}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:radial-gradient(900px 500px at 90% -10%,rgba(120,220,170,.40),transparent 60%),radial-gradient(800px 500px at -10% 10%,rgba(90,200,245,.40),transparent 60%),radial-gradient(700px 500px at 60% 100%,rgba(140,230,255,.35),transparent 60%);background-attachment:fixed;color:var(--ink);font:18px/1.55 "Times New Roman",Times,"Liberation Serif",serif}
+h1,h2,h3{font-family:"Times New Roman",Times,"Liberation Serif",serif;font-weight:700;line-height:1.1;margin:0}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{background:linear-gradient(90deg,#bfe9fb,#c9f5df);padding-bottom:14px;position:sticky;top:0;z-index:5;box-shadow:0 6px 24px rgba(26,154,107,.3)}
+nav{display:flex;align-items:center;gap:6px;padding:12px 0;flex-wrap:wrap}
+.brand{font:24px "Times New Roman",Times,"Liberation Serif",serif;margin-right:auto;display:flex;align-items:center;gap:10px;color:#0f3b4a}
+.brand i{width:24px;height:28px;background:linear-gradient(160deg,#e3f6ff,#5bc0f0);border-radius:50% 50% 55% 55%/60% 60% 45% 45%;position:relative;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.brand i:before{content:"";position:absolute;left:10px;top:-8px;width:4px;height:10px;background:#7dff9b;border-radius:2px}
+nav a,nav button.lnk{padding:8px 14px;border-radius:99px;text-decoration:none;color:#0f3b4a;background:none;border:0;cursor:pointer;font-weight:500}
+nav a:hover,nav button.lnk:hover{background:rgba(255,255,255,.65)}.wave{position:absolute;left:0;bottom:-1px;width:100%;height:16px;display:block}
+nav a.on{background:#fff;color:#0b6a9c;font-weight:700}
+nav .btn{background:#0f3b4a;color:#fff;box-shadow:none}
+.btn{background:var(--grad);color:#fff;border:0;padding:13px 24px;border-radius:99px;cursor:pointer;font-weight:700;box-shadow:0 8px 20px rgba(19,133,194,.35);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(19,133,194,.45)}
+.btn.alt{background:var(--card);color:var(--violet);box-shadow:inset 0 0 0 2px var(--violet)}
+.btn:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.view{display:none;padding:40px 0 70px;position:relative}.view.on{display:block}
+.blobs span{position:absolute;border-radius:50%;opacity:.3;z-index:-1;animation:bob 7s ease-in-out infinite alternate}
+.blobs span:nth-child(1){width:120px;height:140px;background:var(--skin);left:-30px;top:10px}
+.blobs span:nth-child(2){width:80px;height:95px;background:#8fd8f5;right:30%;top:-10px;animation-delay:-2s}
+.blobs span:nth-child(3){width:150px;height:175px;background:var(--violet);right:-40px;bottom:30px;animation-delay:-4s}
+@keyframes bob{to{transform:translateY(22px) rotate(8deg)}}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(42px,6.4vw,72px);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--ink2);max-width:46ch;margin:16px 0 26px;font-size:18px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.steps span{padding:7px 14px;border-radius:99px;font-weight:700;font-size:14px;color:#fff}
+.steps span:nth-child(1){background:#1a9a6b}.steps span:nth-child(2){background:#1385c2}.steps span:nth-child(3){background:#f59e0b;color:#3b1a00}.steps span:nth-child(4){background:#0e8fa8}
+.scan{position:relative;aspect-ratio:1;border-radius:32px;border:3px dashed var(--skin);background:linear-gradient(160deg,var(--card),rgba(255,176,0,.14));display:grid;place-items:center;overflow:hidden;cursor:pointer;text-align:center;padding:20px;box-shadow:0 20px 50px rgba(26,154,107,.22)}
+.scan img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scan .hint{color:var(--ink2);max-width:24ch}
+.scan .hint b{display:block;font:24px "Times New Roman",Times,"Liberation Serif",serif;color:var(--ink);margin-bottom:6px}
+.scan .hint:before{content:"🧅";display:block;font-size:54px;margin-bottom:6px}
+.scan.busy:after{content:"";position:absolute;left:0;right:0;height:5px;background:linear-gradient(90deg,#22a84a,#ffb000,#d81b76);box-shadow:0 0 26px 10px rgba(255,176,0,.75);animation:sweep 1.1s ease-in-out infinite alternate}
+.scan.busy{border-style:solid;border-color:var(--gold)}
+@keyframes sweep{from{top:6%}to{top:94%}}
+.corner{position:absolute;width:30px;height:30px;border:5px solid var(--gold);pointer-events:none;z-index:2}
+.c1{left:14px;top:14px;border-right:0;border-bottom:0;border-radius:10px 0 0 0}.c2{right:14px;top:14px;border-left:0;border-bottom:0;border-radius:0 10px 0 0}.c3{left:14px;bottom:14px;border-right:0;border-top:0;border-radius:0 0 0 10px}.c4{right:14px;bottom:14px;border-left:0;border-top:0;border-radius:0 0 10px 0}
+.result{margin-top:30px;display:none;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:linear-gradient(120deg,color-mix(in srgb,var(--g) 18%,var(--card)),var(--card));border:2px solid var(--g);border-radius:26px;padding:26px;box-shadow:0 14px 36px color-mix(in srgb,var(--g) 30%,transparent)}
+.result.on{display:grid;animation:pop .4s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.letter{width:96px;height:96px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font:52px "Times New Roman",Times,"Liberation Serif",serif;box-shadow:0 0 0 8px color-mix(in srgb,var(--g) 25%,transparent)}
+.result h2{font-size:34px}
+.result dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0 0}
+.result dl div{background:var(--card);border-radius:14px;padding:10px 14px}
+.result dt{font-size:13px;color:var(--ink2)}.result dd{margin:0;font-weight:700}
+.note{font-size:13px;color:var(--ink2);margin-top:10px}
+.fb button{background:var(--card);border:1.5px solid var(--violet);color:var(--violet);border-radius:99px;padding:4px 14px;cursor:pointer;margin-right:6px;font-weight:700}
+.grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:26px}
+.gc{background:linear-gradient(165deg,color-mix(in srgb,var(--g) 22%,var(--card)),var(--card) 65%);border:2px solid color-mix(in srgb,var(--g) 55%,transparent);border-radius:24px;padding:26px;transition:transform .2s}
+.gc:hover{transform:translateY(-6px) rotate(-.6deg)}
+.gc h3{font-size:26px;margin-bottom:10px;color:var(--g)}.gc p{color:var(--ink2);margin:8px 0}.gc p b{color:var(--ink)}
+.tbl{width:100%;border-collapse:collapse;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:0 6px 20px rgba(26,154,107,.12)}
+.tbl th{background:var(--grad);color:#fff}
+.tbl th,.tbl td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.tbl tr:nth-child(even) td{background:color-mix(in srgb,var(--skin) 5%,var(--card))}
+.tbl img{width:46px;height:46px;object-fit:cover;border-radius:10px;display:block}
+.scroll{overflow-x:auto}
+.pill{display:inline-block;padding:2px 12px;border-radius:99px;color:#fff;font-weight:700;background:var(--g)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:22px 0}
+.stat{border-radius:20px;padding:18px;color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.15)}
+.stat b{font:38px "Times New Roman",Times,"Liberation Serif",serif;display:block}
+.stat:nth-child(1){background:linear-gradient(135deg,#1385c2,#5bc0f0)}.stat:nth-child(2){background:linear-gradient(135deg,#0e8fa8,#4dd0e1)}.stat:nth-child(3){background:linear-gradient(135deg,#15803d,#34d399)}.stat:nth-child(4){background:linear-gradient(135deg,#d97706,#fbbf24)}.stat:nth-child(5){background:linear-gradient(135deg,#c62828,#ff6b6b)}
+.bars{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px;margin-bottom:22px}
+.bar{display:grid;grid-template-columns:70px 1fr 40px;gap:10px;align-items:center;margin:10px 0}
+.bar div div{height:18px;border-radius:9px;background:var(--g);min-width:3px;transition:width .5s}
+.bar>div{background:var(--line);border-radius:9px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.tools input,.tools select{padding:10px 14px;border-radius:99px;border:2px solid var(--line);background:var(--card)}
+dialog{border:0;border-radius:26px;padding:28px;background:var(--card);color:var(--ink);width:min(380px,92vw);border-top:8px solid var(--skin)}
+dialog::backdrop{background:rgba(43,15,58,.65)}
+dialog label{display:block;margin:12px 0 4px;font-size:14px}
+dialog input{width:100%;padding:11px 14px;border-radius:12px;border:2px solid var(--line);background:var(--bg)}
+.err{color:var(--C);min-height:1.4em;font-size:14px}
+.strip{display:flex;align-items:flex-end;gap:18px;justify-content:center;margin-top:34px;padding:18px;border-radius:26px;background:linear-gradient(90deg,#d5f0fc,#d6f7e6)}.strip svg{width:64px;height:76px;color:var(--g);filter:drop-shadow(0 6px 8px rgba(15,59,74,.2))}.strip svg:nth-child(2){width:54px;height:66px}.strip svg:nth-child(3){width:46px;height:58px}.strip p{margin:0 0 6px 10px;color:#0f3b4a;font-weight:700}
+.gA{--g:var(--A)}.gB{--g:var(--B)}.gC{--g:var(--C)}
+@media (max-width:800px){.hero{grid-template-columns:1fr}.result{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.scan.busy:after{animation:none;top:50%}.bar div div,.btn,.gc{transition:none}.blobs span,.result.on{animation:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><nav id="nav"></nav></div><svg class="wave" viewBox="0 0 1440 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0 8C240 20 480 0 720 8S1200 18 1440 4V16H0Z" fill="#eefaf8"/></svg></header>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="on" viewBox="0 0 60 72"><path d="M30 4c2 6 1 10-1 15C44 23 58 35 58 50c0 13-12 20-28 20S2 63 2 50c0-15 14-27 28-31-2-5-3-9 0-15z" fill="currentColor"/><path d="M30 20c-9 9-11 24-6 48M30 20c9 9 11 24 6 48M30 20v50" stroke="#fff" stroke-opacity=".55" fill="none" stroke-width="2.5"/></symbol></svg>
+<main class="wrap">
+<section class="view" id="v-home">
+  <div class="blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="hero">
+    <div>
+      <h1>Scan. Grade. Choose Smart.</h1>
+      <p>Take a photo of an onion and Onion Grade tells you whether it is good to store for a week, or best cooked today.</p>
+      <button class="btn" id="pick">Scan an onion</button>
+      <a class="btn alt" href="#grades" style="text-decoration:none;display:inline-block;margin-left:8px">Explore grades</a>
+      <div class="steps"><span>Scan</span><span>Analyze</span><span>Grade</span><span>Choose</span></div>
+    </div>
+    <div class="scan" id="scan" tabindex="0" role="button" aria-label="Upload or capture an onion photo">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="hint" id="hint"><b>Drop an onion photo here</b>or tap to upload or use your camera</div>
+    </div>
+  </div>
+  <div class="strip" aria-hidden="true"><svg class="gA"><use href="#on"/></svg><svg class="gB"><use href="#on"/></svg><svg class="gC"><use href="#on"/></svg><p>Premium &bull; Medium &bull; Use now</p></div>
+  <input type="file" id="file" accept="image/*" capture="environment" hidden>
+  <div class="result" id="result" aria-live="polite"></div>
+</section>
+
+<section class="view" id="v-grades">
+  <h2>Three grades, three uses</h2>
+  <div class="grades">
+    <div class="gc gA"><h3>🟢 Grade A · Premium</h3><p>Firm, healthy-looking onion with clean, tight skin.</p><p><b>Usable for 7+ days</b> in suitable storage.</p><p>Price: Premium</p></div>
+    <div class="gc gB"><h3>🟡 Grade B · Medium</h3><p>Good onion with minor visible issues like loose skin or small marks.</p><p><b>Usable for about 3–6 days.</b></p><p>Price: Medium</p></div>
+    <div class="gc gC"><h3>🔴 Grade C · Use now</h3><p>Early deterioration, not rotten. Cook it as soon as possible.</p><p><b>Use immediately.</b></p><p>Price: Lower</p></div>
+  </div>
+  <p class="note">Storage times are estimates. Temperature, humidity and handling change how long an onion lasts.</p>
+</section>
+
+<section class="view" id="v-history"><h2>Your scan history</h2><div id="hist" class="scroll" style="margin-top:18px"></div></section>
+
+<section class="view" id="v-admin">
+  <h2>Shop dashboard</h2>
+  <div class="stats" id="stats"></div>
+  <div class="bars" id="bars"></div>
+  <h3>Customers</h3>
+  <div class="tools"><input id="q" type="search" placeholder="Search name or username" aria-label="Search customers"></div>
+  <div class="scroll" id="cust"></div>
+  <h3 style="margin-top:28px">Scan records</h3>
+  <div class="tools"><select id="fg" aria-label="Filter by grade"><option value="">All grades</option><option>A</option><option>B</option><option>C</option></select><input id="fd" type="date" aria-label="Filter by date"></div>
+  <div class="scroll" id="scans"></div>
+</section>
+</main>
+
+<dialog id="dlg">
+  <h3 id="dt">Log in</h3>
+  <form id="af" method="dialog" onsubmit="return false">
+    <div id="nmw" hidden><label for="nm">Name</label><input id="nm" autocomplete="name"></div>
+    <label for="un">Username</label><input id="un" autocomplete="username">
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password">
+    <p class="err" id="er"></p>
+    <button class="btn" id="go" style="width:100%">Log in</button>
+    <p class="note"><button type="button" class="lnk" id="sw" style="background:none;border:0;color:var(--skin);cursor:pointer;padding:0;font-weight:700">Create an account</button> · <button type="button" id="cl" style="background:none;border:0;color:var(--ink2);cursor:pointer;padding:0">Close</button></p>
+  </form>
+</dialog>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store={
+  get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const mem={}; // fallback if storage is unavailable
+let users=store.get('og_users',[]), scans=store.get('og_scans',[]), me=store.get('og_me',null);
+const sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const saveAll=()=>{store.set('og_users',users);store.set('og_scans',scans);store.set('og_me',me)};
+// Admin account is seeded at setup (demo only). In production, create it on the server and keep it out of the page.
+(async()=>{users=users.filter(u=>u.role!=='admin');users.push({id:'ADM1',name:'Dhasha',username:'dhasha',hash:await sha('dhanusuya3108'),role:'admin',date:new Date().toISOString()});saveAll()})();
+
+const G={A:{name:'Premium Quality Onion',use:'7+ days under suitable storage',price:'Premium',c:'A'},
+         B:{name:'Medium Quality Onion',use:'About 3–6 days under suitable storage',price:'Medium',c:'B'},
+         C:{name:'Immediate-Use Onion',use:'Early deterioration. Use as soon as possible',price:'Lower',c:'C'}};
+
+/* ---------- navigation ---------- */
+function nav(){
+  const h=(location.hash||'#home').slice(1);
+  const links=[['home','Home'],['grades','Grades']];
+  if(me&&me.role==='customer')links.push(['history','History']);
+  if(me&&me.role==='admin')links.push(['history','My scans'],['admin','Dashboard']);
+  $('#nav').innerHTML='<span class="brand"><i></i>Onion Grade</span>'+links.map(l=>`<a href="#${l[0]}" class="${h===l[0]?'on':''}">${l[1]}</a>`).join('')+
+    (me?`<button class="lnk" id="lo">Log out (${esc(me.username)})</button>`:'<button class="btn" id="li">Log in</button>');
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+h));
+  if($('#li'))$('#li').onclick=()=>openAuth('login');
+  if($('#lo'))$('#lo').onclick=()=>{me=null;saveAll();location.hash='#home';nav()};
+  if(h==='history')renderHist(); if(h==='admin')renderAdmin();
+  if((h==='history'&&!me)||(h==='admin'&&(!me||me.role!=='admin'))){location.hash='#home'}
+}
+addEventListener('hashchange',nav);
+
+/* ---------- auth ---------- */
+let mode='login';
+function openAuth(m){mode=m;$('#dt').textContent=m==='login'?'Log in':'Create account';$('#go').textContent=m==='login'?'Log in':'Sign up';
+  $('#sw').textContent=m==='login'?'Create an account':'I already have an account';$('#nmw').hidden=m==='login';$('#er').textContent='';
+  $('#pw').autocomplete=m==='login'?'current-password':'new-password';$('#dlg').showModal()}
+$('#sw').onclick=()=>openAuth(mode==='login'?'signup':'login');
+$('#cl').onclick=()=>$('#dlg').close();
+$('#go').onclick=async()=>{
+  const un=$('#un').value.trim().toLowerCase(),pw=$('#pw').value,nm=$('#nm').value.trim();
+  if(!un||pw.length<6){$('#er').textContent='Enter a username and a password of at least 6 characters.';return}
+  const hash=await sha(pw);
+  if(mode==='signup'){
+    if(!nm){$('#er').textContent='Enter your name.';return}
+    if(users.some(u=>u.username===un)){$('#er').textContent='That username is taken. Try another.';return}
+    me={id:'C'+Date.now().toString(36),name:nm,username:un,hash,role:'customer',date:new Date().toISOString()};users.push(me);
+  }else{
+    const u=users.find(u=>u.username===un&&u.hash===hash);
+    if(!u){$('#er').textContent='Username or password is incorrect.';return}
+    me=u;
+  }
+  saveAll();$('#dlg').close();$('#pw').value='';nav();
+};
+
+/* ---------- scanner ---------- */
+const scanEl=$('#scan');
+const open=()=>{if(!me){openAuth('login');return}$('#file').click()};
+$('#pick').onclick=open;scanEl.onclick=open;
+scanEl.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}};
+['dragover','drop'].forEach(ev=>scanEl.addEventListener(ev,e=>{e.preventDefault();if(ev==='drop'&&me&&e.dataTransfer.files[0])handle(e.dataTransfer.files[0])}));
+$('#file').onchange=e=>{if(e.target.files[0])handle(e.target.files[0]);e.target.value=''};
+
+function handle(f){
+  const res=$('#result');res.className='result';
+  if(!f.type.startsWith('image/')){showMsg('That file is not an image. Choose a JPG, PNG or WebP photo.');return}
+  const url=URL.createObjectURL(f),img=new Image();
+  img.onload=()=>{
+    scanEl.querySelectorAll('img').forEach(i=>i.remove());
+    const show=img.cloneNode();scanEl.prepend(show);$('#hint').style.display='none';scanEl.classList.add('busy');
+    setTimeout(()=>{
+      const a=analyse(img);scanEl.classList.remove('busy');
+      if(!a.onion){showMsg('This does not look like an onion. Retake the photo in good light with the onion filling the frame.');return}
+      const t=document.createElement('canvas');t.width=t.height=72;const x=t.getContext('2d');
+      const s=Math.min(img.width,img.height);x.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,72,72);
+      const rec={id:'S'+Date.now().toString(36),uid:me.id,user:me.username,grade:a.grade,conf:a.conf,thumb:t.toDataURL('image/jpeg',.6),at:new Date().toISOString(),fb:null};
+      scans.unshift(rec);scans=scans.slice(0,300);saveAll();showResult(rec);
+    },1600);
+  };
+  img.onerror=()=>showMsg('This image could not be read. Try another photo.');
+  img.src=url;
+}
+function showMsg(m){const r=$('#result');r.className='result on';r.style.setProperty('--g','var(--ink2)');r.innerHTML=`<div></div><div><b>${esc(m)}</b></div>`;$('#hint').style.display='';scanEl.classList.remove('busy')}
+function showResult(r){
+  const g=G[r.grade],el=$('#result');el.className='result on g'+r.grade;
+  el.innerHTML=`<div class="letter">${r.grade}</div><div><h2>Grade ${r.grade}</h2><div>${g.name}</div>
+  <dl><div><dt>Estimated usability</dt><dd>${g.use}</dd></div><div><dt>Price category</dt><dd>${g.price}</dd></div><div><dt>Model estimate</dt><dd>${r.conf}% confidence</dd></div></dl>
+  <p class="note">An estimate from the photo, not a guarantee.</p>
+  <div class="fb note">Was this right? <button data-f="1">Yes</button><button data-f="0">No</button></div></div>`;
+  el.querySelectorAll('.fb button').forEach(b=>b.onclick=()=>{r.fb=b.dataset.f==='1';saveAll();el.querySelector('.fb').textContent='Thanks, feedback saved.'});
+}
+
+/* Demo grader: reads colour, dullness and surface texture from the photo.
+   Replace analyse() with a call to your trained model (see train.py) for real accuracy. */
+function analyse(img){
+  const n=96,c=document.createElement('canvas');c.width=c.height=n;const x=c.getContext('2d',{willReadFrequently:true});
+  x.drawImage(img,0,0,n,n);const d=x.getImageData(0,0,n,n).data;
+  let sat=0,dull=0,green=0,blue=0,edge=0,prev=null;
+  for(let i=0;i<d.length;i+=4){
+    const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),s=mx?(mx-mn)/mx:0;
+    sat+=s;if(s<.25&&mx>.35)dull++;
+    if(g>r+.04&&g>b+.04)green++;if(b>r+.06&&b>g+.06)blue++;
+    const gr=(r+g+b)/3;if(prev!==null)edge+=Math.abs(gr-prev);prev=gr;
+  }
+  const N=n*n;sat/=N;dull/=N;edge/=N;
+  const onion=green/N<.4&&blue/N<.35&&sat>.12;
+  const dmg=1.6*dull+5*edge-.5*sat;
+  const grade=dmg<.12?'A':dmg<.6?'B':'C';
+  const conf=Math.round(Math.min(92,55+Math.abs(dmg-(grade==='A'?.12:grade==='B'?.36:.6))*60));
+  return{onion,grade,conf};
+}
+
+/* ---------- history & admin ---------- */
+const fmt=t=>new Date(t).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+function scanTable(list,showUser){
+  if(!list.length)return '<p class="note">No scans yet. Scan an onion on the Home page.</p>';
+  return `<table class="tbl"><thead><tr><th>Photo</th><th>Grade</th>${showUser?'<th>Customer</th>':''}<th>Confidence</th><th>When</th></tr></thead><tbody>`+
+  list.map(s=>`<tr><td><img src="${s.thumb}" alt="Scanned onion"></td><td><span class="pill g${s.grade}">${s.grade}</span></td>${showUser?`<td>${esc(s.user)}</td>`:''}<td>${s.conf}%</td><td>${fmt(s.at)}</td></tr>`).join('')+'</tbody></table>';
+}
+function renderHist(){if(me)$('#hist').innerHTML=scanTable(scans.filter(s=>s.uid===me.id),false)}
+function renderAdmin(){
+  const cs=users.filter(u=>u.role==='customer'),cnt=g=>scans.filter(s=>s.grade===g).length;
+  $('#stats').innerHTML=[['Customers',cs.length],['Total scans',scans.length],['Grade A',cnt('A')],['Grade B',cnt('B')],['Grade C',cnt('C')]].map(a=>`<div class="stat"><b>${a[1]}</b>${a[0]}</div>`).join('');
+  const mx=Math.max(1,cnt('A'),cnt('B'),cnt('C'));
+  $('#bars').innerHTML='<b>Grade distribution</b>'+['A','B','C'].map(g=>`<div class="bar g${g}"><span>Grade ${g}</span><div><div style="width:${cnt(g)/mx*100}%"></div></div><span>${cnt(g)}</span></div>`).join('');
+  const draw=()=>{
+    const q=$('#q').value.toLowerCase(),fg=$('#fg').value,fd=$('#fd').value;
+    const cl=cs.filter(u=>u.name.toLowerCase().includes(q)||u.username.includes(q));
+    $('#cust').innerHTML=cl.length?`<table class="tbl"><thead><tr><th>Name</th><th>Username</th><th>Joined</th><th>Scans</th></tr></thead><tbody>`+cl.map(u=>`<tr><td>${esc(u.name)}</td><td>${esc(u.username)}</td><td>${fmt(u.date)}</td><td>${scans.filter(s=>s.uid===u.id).length}</td></tr>`).join('')+'</tbody></table>':'<p class="note">No customers match. Customers appear here after they sign up.</p>';
+    $('#scans').innerHTML=scanTable(scans.filter(s=>(!fg||s.grade===fg)&&(!fd||s.at.slice(0,10)===fd)),true);
+  };
+  $('#q').oninput=draw;$('#fg').onchange=draw;$('#fd').onchange=draw;draw();
+}
+nav();
+</script>
+</body>
+</html>
